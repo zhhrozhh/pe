@@ -110,6 +110,7 @@ class Filter:
         print(x,y)
         return res
 def noise_gate(f):
+    #RGB_op_rule = lambda x: ceil(x)%256
     return Filter(f.w,f.h,f.d,fx=lambda x,y,z:f.f[x][y][z]+0.2*(x+1)+0.1*y+0.1*z)
 
 def mono_gate(img):
