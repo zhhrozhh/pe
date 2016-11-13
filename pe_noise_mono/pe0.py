@@ -134,3 +134,43 @@ def mono_gate(img):
                 p = (floor(p[0]*0.7),floor(p[1]*0.9),floor(p[2]*0.9))
             res.putpixel((i,j),p)
     return res
+def rgb2hrgb(r,g,b,a=0):
+    RGB_op_rule = lambda x:max(min(128,int(x)),-128)
+    return RGB(r-128,g-128,b-128)
+def hrgb2rgb(rgb):
+    return RGB(*(rgb+RGB(128,128,128)).rgb)
+def px_movement(img):
+    print(img.size)
+    res = Image.new(img.mode,img.size)
+    field = [[rgb2hrgb(128,128,128) for i in range(img.size[0])]for j in range(img.size[1])]
+    for i in range(img.size[0]):
+        for j in range(img.size[1]):
+            px = rgb2hrgb(*img.getpixel((i,j)))
+            field[(j+px.g()//32)%img.size[1]][(i+px.r()//32)%img.size[0]] += px*0.7
+            field[(j+px.g()//32)%img.size[1]][(i+px.r()//32)%img.size[0]] += rgb2hrgb(128+px.b()*0.1,128+px.b()*0.1,128)
+            field[j][(i+1)%img.size[0]] += px*0.1
+            field[j][(i-1)%img.size[0]] += px*0.1
+            field[(j+1)%img.size[1]][i] += px*0.1
+            field[(j-1)%img.size[1]][i] += px*0.1
+    for i in range(img.size[0]):
+        for j in range(img.size[1]):
+            res.putpixel((i,j),hrgb2rgb(field[j][i]).rgb)
+    return res
+def px_movement_p(img):
+    print(img.size)
+    res = Image.new(img.mode,img.size)
+    field = [[rgb2hrgb(128,128,128) for i in range(img.size[0])]for j in range(img.size[1])]
+    for i in range(img.size[0]):
+        for j in range(img.size[1]):
+            px = rgb2hrgb(*img.getpixel((i,j)))
+            field[(j+px.g()//8)%img.size[1]][(i+px.r()//8)%img.size[0]] += px*0.7
+            field[(j+px.g()//8)%img.size[1]][(i+px.r()//8)%img.size[0]] += rgb2hrgb(128+px.b()*0.1,128+px.b()*0.1,128)
+            field[j][(i+1)%img.size[0]] += px*0.1
+            field[j][(i-1)%img.size[0]] += px*0.1
+            field[(j+1)%img.size[1]][i] += px*0.1
+            field[(j-1)%img.size[1]][i] += px*0.1
+    for i in range(img.size[0]):
+        for j in range(img.size[1]):
+            res.putpixel((i,j),hrgb2rgb(field[j][i]).rgb)
+    return res            
+            
