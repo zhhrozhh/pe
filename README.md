@@ -1,2 +1,2 @@
 # pe
-<img src = "http://cse.msu.edu/~zhangh40/mth/noise.gif" >
+<img src = "pe_noise_mono/Untitled.gif" >
