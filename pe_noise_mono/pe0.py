@@ -112,7 +112,17 @@ class Filter:
 def noise_gate(f):
     #RGB_op_rule = lambda x: ceil(x)%256
     return Filter(f.w,f.h,f.d,fx=lambda x,y,z:f.f[x][y][z]+0.2*(x+1)+0.1*y+0.1*z)
-
+def noise_sequence_A(n):
+    fs = [Filter(2,2,1,fx = lambda x,y,z:1),Filter(2,3,1,fx = lambda x,y,z:1),Filter(3,2,1,fx = lambda x,y,z:1),\
+          Filter(3,3,1,fx = lambda x,y,z:1),Filter(3,2,1,fx = lambda x,y,z:1),Filter(2,3,1,fx = lambda x,y,z:1),\
+          Filter(2,2,1,fx = lambda x,y,z:1),Filter(2,1,1,fx = lambda x,y,z:1),Filter(1,2,1,fx = lambda x,y,z:1),\
+          Filter(1,1,1,fx = lambda x,y,z:1)] 
+    ff = fs[0]
+    fs.reverse()
+    for i in range(n):
+        ff=noise_gate(ff)
+        fs.append(ff)
+    return fs
 def mono_gate(img):
     res = Image.new(img.mode,img.size)
     for i in range(res.size[0]):
