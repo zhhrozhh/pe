@@ -1,7 +1,7 @@
 # pe
 Noise + Game of life<p>
-<img src = "pe_noise_mono/Untitled.gif" /><p>
+<img src = "misc/Untitled.gif" /><p>
 bubble sort<p>
-<img src = "pe_noise_mono/sad.gif" /><p>
+<img src = "misc/sad.gif" /><p>
 pixel movement<p>
-<img src = "pe_noise_mono/s.gif" />
+<img src = "misc/s.gif" />
