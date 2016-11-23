@@ -173,4 +173,36 @@ def px_movement_p(img):
         for j in range(img.size[1]):
             res.putpixel((i,j),hrgb2rgb(field[j][i]).rgb)
     return res            
-            
+#http://stackoverflow.com/questions/4904940/python-converting-gif-frames-to-png
+def iter_frames(im):
+    try:
+        i= 0
+        while 1:
+            im.seek(i)
+            imframe = im.copy()
+            if i == 0: 
+                palette = imframe.getpalette()
+            else:
+                imframe.putpalette(palette)
+            imframe = imframe.convert('RGB')
+            yield imframe
+            i += 1
+    except EOFError:
+        pass
+def fl(img,r,f=lambda x:x[0]*0.5+x[1]*0.3+x[2]*0.2):
+    cpy = img.copy()
+    avg = 0
+    row = []
+    for i in range(cpy.size[0]):
+        px = f(cpy.getpixel((i,r)))
+        row.append(px)
+        avg+=px
+    avg /= cpy.size[0]
+    for i in range(cpy.size[0]):
+        y = (r-int((avg-row[i])/25))%cpy.size[1]
+        px = cpy.getpixel((i,r))
+        cpy.putpixel((i,y),(int(0.8*px[0]),int(0.9*px[1]),int(0.9*px[2])))
+        if not randrange(10)%4:
+            cpy.putpixel((i,(y+randrange(-5,5))%cpy.size[1]),\
+                         ((int(0.3*px[0])),int(0.5*px[1]),int(0.5*px[2])))
+    return cpy
